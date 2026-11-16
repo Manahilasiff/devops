@@ -1,0 +1,4 @@
+predicted category,GRE-encapsulated flood,HTTP/application-layer flood,ICMP flood,TCP SYN flood,TCP flag/connection flood,UDP flood,Unclassified volumetric traffic
+DDoS,1033,2165,4730,5126,8183,5941,301
+DoS,259,539,1142,1184,1921,1396,69
+Mirai,80,175,365,369,682,450,21

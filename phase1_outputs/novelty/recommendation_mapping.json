@@ -1,0 +1,372 @@
+{
+  "version": "1.0",
+  "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic.",
+  "playbooks": {
+    "DDoS": {
+      "playbook_id": "PB-DDOS",
+      "title": "Distributed denial-of-service flood (many sources)",
+      "family": "Flood",
+      "attck_techniques": [
+        [
+          "T1498",
+          "Network Denial of Service"
+        ],
+        [
+          "T1498.001",
+          "Direct Network Flood"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Ask the upstream provider / DDoS-protection service to filter the volumetric traffic before it reaches the IoT network.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Apply per-source and per-protocol rate limits on the edge router or firewall for the targeted destination.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "If the flooding sources are devices inside the network, move them to a quarantine VLAN.",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Track packets/s and bytes/s per destination against the normal baseline and keep a packet capture for investigation.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    },
+    "DoS": {
+      "playbook_id": "PB-DOS",
+      "title": "Denial-of-service flood (single source)",
+      "family": "Flood",
+      "attck_techniques": [
+        [
+          "T1499",
+          "Endpoint Denial of Service"
+        ],
+        [
+          "T1498.001",
+          "Direct Network Flood"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Identify the single offending source address and block or rate-limit it at the firewall.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Enable connection limits and shorter timeouts on the targeted service or device.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Monitor CPU, memory and connection-table usage of the targeted device to confirm recovery.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    },
+    "Mirai": {
+      "playbook_id": "PB-MIRAI",
+      "title": "Mirai-style IoT botnet flood",
+      "family": "Flood",
+      "attck_techniques": [
+        [
+          "T1498",
+          "Network Denial of Service"
+        ],
+        [
+          "T1110",
+          "Brute Force"
+        ],
+        [
+          "T1584.005",
+          "Compromise Infrastructure: Botnet"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Isolate the participating IoT device(s) from the network; reboot and restore firmware before reconnecting (Mirai spreads by guessing default Telnet/SSH passwords [18]).",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Replace factory-default credentials on all IoT devices with unique strong passwords.",
+          "mitigation_id": "M1027",
+          "mitigation_name": "Password Policies"
+        },
+        {
+          "action": "Disable Telnet and other unused remote-administration services on IoT devices.",
+          "mitigation_id": "M1042",
+          "mitigation_name": "Disable or Remove Feature or Program"
+        },
+        {
+          "action": "Update device firmware to a version that fixes known weaknesses.",
+          "mitigation_id": "M1051",
+          "mitigation_name": "Update Software"
+        },
+        {
+          "action": "Filter the outbound flood at the egress firewall so infected devices cannot attack others.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        }
+      ]
+    },
+    "Recon": {
+      "playbook_id": "PB-RECON",
+      "title": "Reconnaissance / scanning",
+      "family": "Recon",
+      "attck_techniques": [
+        [
+          "T1595",
+          "Active Scanning"
+        ],
+        [
+          "T1046",
+          "Network Service Discovery"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Raise the scanning source on the watch list and correlate it with later alerts — scans often precede an attack.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Close unused ports and disable services the device does not need, to shrink what a scan can find.",
+          "mitigation_id": "M1042",
+          "mitigation_name": "Disable or Remove Feature or Program"
+        },
+        {
+          "action": "Keep IoT devices in a separate network segment so a scanner cannot reach everything.",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Enable IDS/IPS signatures for port-scan, host-discovery and OS-fingerprinting patterns.",
+          "mitigation_id": "M1031",
+          "mitigation_name": "Network Intrusion Prevention"
+        }
+      ]
+    },
+    "Spoofing": {
+      "playbook_id": "PB-SPOOF",
+      "title": "ARP / DNS spoofing (adversary-in-the-middle)",
+      "family": "Spoofing",
+      "attck_techniques": [
+        [
+          "T1557",
+          "Adversary-in-the-Middle"
+        ],
+        [
+          "T1557.002",
+          "ARP Cache Poisoning"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Enable Dynamic ARP Inspection and DHCP snooping on the switches serving the IoT devices.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Use static ARP entries for critical hosts such as the gateway.",
+          "mitigation_id": "M1035",
+          "mitigation_name": "Limit Access to Resource Over Network"
+        },
+        {
+          "action": "Point devices to trusted DNS resolvers that validate DNSSEC, and verify recent DNS answers.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Prefer encrypted device communication (TLS) so intercepted traffic is not readable.",
+          "mitigation_id": "M1041",
+          "mitigation_name": "Encrypt Sensitive Information"
+        },
+        {
+          "action": "Enable IDS/IPS rules for adversary-in-the-middle traffic patterns.",
+          "mitigation_id": "M1031",
+          "mitigation_name": "Network Intrusion Prevention"
+        }
+      ]
+    },
+    "Web-based": {
+      "playbook_id": "PB-WEB",
+      "title": "Web application attack (SQLi, command injection, XSS, upload, backdoor)",
+      "family": "Web",
+      "attck_techniques": [
+        [
+          "T1190",
+          "Exploit Public-Facing Application"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Put a web application firewall / input validation in front of device web interfaces.",
+          "mitigation_id": "M1050",
+          "mitigation_name": "Exploit Protection"
+        },
+        {
+          "action": "Patch the device firmware or web application.",
+          "mitigation_id": "M1051",
+          "mitigation_name": "Update Software"
+        },
+        {
+          "action": "Make administrative web interfaces reachable only from the management network.",
+          "mitigation_id": "M1035",
+          "mitigation_name": "Limit Access to Resource Over Network"
+        },
+        {
+          "action": "Review web-server logs for injection payloads and run a vulnerability scan of the device.",
+          "mitigation_id": "M1016",
+          "mitigation_name": "Vulnerability Scanning"
+        }
+      ]
+    },
+    "BruteForce": {
+      "playbook_id": "PB-BRUTE",
+      "title": "Password brute force / dictionary attack",
+      "family": "BruteForce",
+      "attck_techniques": [
+        [
+          "T1110",
+          "Brute Force"
+        ],
+        [
+          "T1110.001",
+          "Password Guessing"
+        ]
+      ],
+      "actions": [
+        {
+          "action": "Enable account lockout or progressive delays after repeated failed logins.",
+          "mitigation_id": "M1036",
+          "mitigation_name": "Account Use Policies"
+        },
+        {
+          "action": "Enable multi-factor authentication where the device or service supports it.",
+          "mitigation_id": "M1032",
+          "mitigation_name": "Multi-factor Authentication"
+        },
+        {
+          "action": "Replace weak or default passwords; use key-based authentication for SSH.",
+          "mitigation_id": "M1027",
+          "mitigation_name": "Password Policies"
+        },
+        {
+          "action": "Monitor the failed-login rate per source and block sources that exceed it.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    }
+  },
+  "special": {
+    "NO_ACTION": {
+      "playbook_id": "PB-NONE",
+      "title": "No attack detected",
+      "family": "Benign",
+      "attck_techniques": [],
+      "actions": [
+        {
+          "action": "No defensive action recommended; continue normal monitoring.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    },
+    "UNCERTAIN": {
+      "playbook_id": "PB-TRIAGE",
+      "title": "Uncertain prediction — analyst review",
+      "family": "Uncertain",
+      "attck_techniques": [],
+      "actions": [
+        {
+          "action": "Do not apply category-specific countermeasures yet: the model is not confident about this window.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Inspect the source/destination hosts and keep a packet capture of the related traffic.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Compare the evidence features and the top-2 candidate categories, then decide manually.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    },
+    "UNSUPPORTED": {
+      "playbook_id": "PB-UNSUPPORTED",
+      "title": "Category without a playbook",
+      "family": "Unsupported",
+      "attck_techniques": [],
+      "actions": [
+        {
+          "action": "No category-specific playbook exists for this label; follow the general incident-response procedure.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Escalate to an analyst and record the new category so a playbook can be written.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ]
+    }
+  },
+  "flood_protocol_subplaybooks": {
+    "ICMP flood": [
+      {
+        "action": "Rate-limit or drop ICMP echo requests at the network edge for the targeted hosts.",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "UDP flood": [
+      {
+        "action": "Rate-limit UDP traffic to the target and block UDP ports the device does not use.",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "TCP SYN flood": [
+      {
+        "action": "Enable SYN-flood protection (SYN cookies / SYN proxy) and shorten the half-open connection timeout.",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "TCP flag/connection flood": [
+      {
+        "action": "Use stateful filtering to drop TCP packets that do not belong to an established connection (RST/FIN/PSH-ACK floods).",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "HTTP/application-layer flood": [
+      {
+        "action": "Place a reverse proxy or web application firewall in front of the device web service with request-rate limits and short idle timeouts (also mitigates slow-request attacks such as Slowloris).",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "GRE-encapsulated flood": [
+      {
+        "action": "Drop GRE (IP protocol 47) traffic at the edge if the network does not use GRE tunnels.",
+        "mitigation_id": "M1037",
+        "mitigation_name": "Filter Network Traffic"
+      }
+    ],
+    "Unclassified volumetric traffic": []
+  },
+  "sources": "MITRE ATT&CK Enterprise (attack.mitre.org), technique and mitigation IDs checked 2026-11-15"
+}

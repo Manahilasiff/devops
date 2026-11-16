@@ -1,0 +1,4 @@
+system,attack: correct specific %,attack: family-relevant specific %,attack: wrong specific %,attack: deferred %,attack: missed %,benign: false-alarm playbook %,benign: deferred %,precision of issued specific playbooks %,attack: generic advice only %
+A: binary RF + generic advice,0.0,0.0,0.0,0.0,0.17664678323647626,8.30670926517572,0.0,,99.82335321676352
+"B: category engine, no gate",99.29085276874632,99.32669414505517,0.5017792683239036,0.0,0.2073679629297765,16.293929712460063,0.0,99.10816957555004,
+C: full engine (tau=0.75),98.3282558050229,98.3282558050229,0.030721179693300224,1.6179821305138116,0.023040884769975168,1.0649627263045793,41.32055378061768,99.94275305750716,

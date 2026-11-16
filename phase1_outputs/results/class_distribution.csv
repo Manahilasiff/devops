@@ -1,0 +1,9 @@
+attack_class,train_count,test_count,train_%,test_%
+DDoS,116204,29152,72.628,72.88
+DoS,27887,6877,17.429,17.192
+Mirai,9101,2263,5.688,5.658
+Benign,3860,939,2.412,2.348
+Spoofing,1671,447,1.044,1.118
+Recon,1167,292,0.729,0.73
+Web-based,55,18,0.034,0.045
+BruteForce,55,12,0.034,0.03

@@ -1,0 +1,679 @@
+{
+  "DDoS": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "DDoS",
+      "confidence": 0.9447,
+      "top2_candidates": [
+        [
+          "DDoS",
+          0.9447
+        ],
+        [
+          "Recon",
+          0.0083
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-DDOS",
+      "title": "Distributed denial-of-service flood (many sources)",
+      "attck_techniques": [
+        [
+          "T1498",
+          "Network Denial of Service"
+        ],
+        [
+          "T1498.001",
+          "Direct Network Flood"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Ask the upstream provider / DDoS-protection service to filter the volumetric traffic before it reaches the IoT network.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Apply per-source and per-protocol rate limits on the edge router or firewall for the targeted destination.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "If the flooding sources are devices inside the network, move them to a quarantine VLAN.",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Track packets/s and bytes/s per destination against the normal baseline and keep a packet capture for investigation.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Place a reverse proxy or web application firewall in front of the device web service with request-rate limits and short idle timeouts (also mitigates slow-request attacks such as Slowloris).",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        }
+      ],
+      "protocol_context": "HTTP/application-layer flood",
+      "evidence": [
+        {
+          "feature": "Max",
+          "value": 54.0,
+          "benign_median": 1137.35,
+          "deviation_benign_sd": -0.54,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 0.0,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "flow_duration",
+          "value": 0.0,
+          "benign_median": 26.5858,
+          "deviation_benign_sd": -0.51,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 0,
+    "true_class": "DDoS"
+  },
+  "DoS": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "DoS",
+      "confidence": 0.9454,
+      "top2_candidates": [
+        [
+          "DoS",
+          0.9454
+        ],
+        [
+          "Benign",
+          0.0083
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-DOS",
+      "title": "Denial-of-service flood (single source)",
+      "attck_techniques": [
+        [
+          "T1499",
+          "Endpoint Denial of Service"
+        ],
+        [
+          "T1498.001",
+          "Direct Network Flood"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Identify the single offending source address and block or rate-limit it at the firewall.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Enable connection limits and shorter timeouts on the targeted service or device.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Monitor CPU, memory and connection-table usage of the targeted device to confirm recovery.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Enable SYN-flood protection (SYN cookies / SYN proxy) and shorten the half-open connection timeout.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        }
+      ],
+      "protocol_context": "TCP SYN flood",
+      "evidence": [
+        {
+          "feature": "Max",
+          "value": 54.0,
+          "benign_median": 1137.35,
+          "deviation_benign_sd": -0.54,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 0.0,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "flow_duration",
+          "value": 0.0,
+          "benign_median": 26.5858,
+          "deviation_benign_sd": -0.51,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 3,
+    "true_class": "DoS"
+  },
+  "Mirai": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Mirai",
+      "confidence": 0.9446,
+      "top2_candidates": [
+        [
+          "Mirai",
+          0.9446
+        ],
+        [
+          "Recon",
+          0.0083
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-MIRAI",
+      "title": "Mirai-style IoT botnet flood",
+      "attck_techniques": [
+        [
+          "T1498",
+          "Network Denial of Service"
+        ],
+        [
+          "T1110",
+          "Brute Force"
+        ],
+        [
+          "T1584.005",
+          "Compromise Infrastructure: Botnet"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Isolate the participating IoT device(s) from the network; reboot and restore firmware before reconnecting (Mirai spreads by guessing default Telnet/SSH passwords [18]).",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Replace factory-default credentials on all IoT devices with unique strong passwords.",
+          "mitigation_id": "M1027",
+          "mitigation_name": "Password Policies"
+        },
+        {
+          "action": "Disable Telnet and other unused remote-administration services on IoT devices.",
+          "mitigation_id": "M1042",
+          "mitigation_name": "Disable or Remove Feature or Program"
+        },
+        {
+          "action": "Update device firmware to a version that fixes known weaknesses.",
+          "mitigation_id": "M1051",
+          "mitigation_name": "Update Software"
+        },
+        {
+          "action": "Filter the outbound flood at the egress firewall so infected devices cannot attack others.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Drop GRE (IP protocol 47) traffic at the edge if the network does not use GRE tunnels.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        }
+      ],
+      "protocol_context": "GRE-encapsulated flood",
+      "evidence": [
+        {
+          "feature": "Protocol Type",
+          "value": 47.0,
+          "benign_median": 6.6,
+          "deviation_benign_sd": 17.81,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "Min",
+          "value": 578.0,
+          "benign_median": 66.0,
+          "deviation_benign_sd": 1.48,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 0.0,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 1,
+    "true_class": "Mirai"
+  },
+  "Benign": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Benign",
+      "confidence": 0.9339,
+      "top2_candidates": [
+        [
+          "Benign",
+          0.9339
+        ],
+        [
+          "BruteForce",
+          0.0138
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "NO_ACTION",
+      "playbook_id": "PB-NONE",
+      "title": "No attack detected",
+      "attck_techniques": [],
+      "recommendations": [
+        {
+          "action": "No defensive action recommended; continue normal monitoring.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 8,
+    "true_class": "Benign"
+  },
+  "Spoofing": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Spoofing",
+      "confidence": 0.9213,
+      "top2_candidates": [
+        [
+          "Spoofing",
+          0.9213
+        ],
+        [
+          "Benign",
+          0.0236
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-SPOOF",
+      "title": "ARP / DNS spoofing (adversary-in-the-middle)",
+      "attck_techniques": [
+        [
+          "T1557",
+          "Adversary-in-the-Middle"
+        ],
+        [
+          "T1557.002",
+          "ARP Cache Poisoning"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Enable Dynamic ARP Inspection and DHCP snooping on the switches serving the IoT devices.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Use static ARP entries for critical hosts such as the gateway.",
+          "mitigation_id": "M1035",
+          "mitigation_name": "Limit Access to Resource Over Network"
+        },
+        {
+          "action": "Point devices to trusted DNS resolvers that validate DNSSEC, and verify recent DNS answers.",
+          "mitigation_id": "M1037",
+          "mitigation_name": "Filter Network Traffic"
+        },
+        {
+          "action": "Prefer encrypted device communication (TLS) so intercepted traffic is not readable.",
+          "mitigation_id": "M1041",
+          "mitigation_name": "Encrypt Sensitive Information"
+        },
+        {
+          "action": "Enable IDS/IPS rules for adversary-in-the-middle traffic patterns.",
+          "mitigation_id": "M1031",
+          "mitigation_name": "Network Intrusion Prevention"
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [
+        {
+          "feature": "Tot size",
+          "value": 2350.8,
+          "benign_median": 243.85,
+          "deviation_benign_sd": 3.02,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "AVG",
+          "value": 1534.5734,
+          "benign_median": 271.2405,
+          "deviation_benign_sd": 1.81,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "urg_count",
+          "value": 336.6,
+          "benign_median": 77.1,
+          "deviation_benign_sd": 1.53,
+          "direction": "higher than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 343,
+    "true_class": "Spoofing"
+  },
+  "Recon": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Recon",
+      "confidence": 0.9372,
+      "top2_candidates": [
+        [
+          "Recon",
+          0.9372
+        ],
+        [
+          "Benign",
+          0.0095
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-RECON",
+      "title": "Reconnaissance / scanning",
+      "attck_techniques": [
+        [
+          "T1595",
+          "Active Scanning"
+        ],
+        [
+          "T1046",
+          "Network Service Discovery"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Raise the scanning source on the watch list and correlate it with later alerts — scans often precede an attack.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Close unused ports and disable services the device does not need, to shrink what a scan can find.",
+          "mitigation_id": "M1042",
+          "mitigation_name": "Disable or Remove Feature or Program"
+        },
+        {
+          "action": "Keep IoT devices in a separate network segment so a scanner cannot reach everything.",
+          "mitigation_id": "M1030",
+          "mitigation_name": "Network Segmentation"
+        },
+        {
+          "action": "Enable IDS/IPS signatures for port-scan, host-discovery and OS-fingerprinting patterns.",
+          "mitigation_id": "M1031",
+          "mitigation_name": "Network Intrusion Prevention"
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [
+        {
+          "feature": "Max",
+          "value": 58.0,
+          "benign_median": 1137.35,
+          "deviation_benign_sd": -0.54,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 0.9,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "flow_duration",
+          "value": 0.0938,
+          "benign_median": 26.5858,
+          "deviation_benign_sd": -0.51,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 572,
+    "true_class": "Recon"
+  },
+  "BruteForce": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "BruteForce",
+      "confidence": 0.8205,
+      "top2_candidates": [
+        [
+          "BruteForce",
+          0.8205
+        ],
+        [
+          "Spoofing",
+          0.0896
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "CATEGORY_PLAYBOOK",
+      "playbook_id": "PB-BRUTE",
+      "title": "Password brute force / dictionary attack",
+      "attck_techniques": [
+        [
+          "T1110",
+          "Brute Force"
+        ],
+        [
+          "T1110.001",
+          "Password Guessing"
+        ]
+      ],
+      "recommendations": [
+        {
+          "action": "Enable account lockout or progressive delays after repeated failed logins.",
+          "mitigation_id": "M1036",
+          "mitigation_name": "Account Use Policies"
+        },
+        {
+          "action": "Enable multi-factor authentication where the device or service supports it.",
+          "mitigation_id": "M1032",
+          "mitigation_name": "Multi-factor Authentication"
+        },
+        {
+          "action": "Replace weak or default passwords; use key-based authentication for SSH.",
+          "mitigation_id": "M1027",
+          "mitigation_name": "Password Policies"
+        },
+        {
+          "action": "Monitor the failed-login rate per source and block sources that exceed it.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [
+        {
+          "feature": "flow_duration",
+          "value": 148.468,
+          "benign_median": 26.5858,
+          "deviation_benign_sd": 2.35,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "Protocol Type",
+          "value": 4.9,
+          "benign_median": 6.6,
+          "deviation_benign_sd": -0.75,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 9.6,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 2966,
+    "true_class": "BruteForce"
+  },
+  "deferred_example": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Recon",
+      "confidence": 0.3097,
+      "top2_candidates": [
+        [
+          "Recon",
+          0.3097
+        ],
+        [
+          "DDoS",
+          0.1852
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "UNCERTAIN_REVIEW",
+      "playbook_id": "PB-TRIAGE",
+      "title": "Uncertain prediction — analyst review",
+      "attck_techniques": [],
+      "recommendations": [
+        {
+          "action": "Do not apply category-specific countermeasures yet: the model is not confident about this window.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Inspect the source/destination hosts and keep a packet capture of the related traffic.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Compare the evidence features and the top-2 candidate categories, then decide manually.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [
+        {
+          "feature": "Protocol Type",
+          "value": 14.37,
+          "benign_median": 6.6,
+          "deviation_benign_sd": 3.43,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "Header_Length",
+          "value": 1557099.8,
+          "benign_median": 503124.25,
+          "deviation_benign_sd": 0.81,
+          "direction": "higher than benign"
+        },
+        {
+          "feature": "Tot size",
+          "value": 734.2,
+          "benign_median": 243.85,
+          "deviation_benign_sd": 0.7,
+          "direction": "higher than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    },
+    "test_row": 9,
+    "true_class": "DDoS"
+  },
+  "unsupported_label_demo": {
+    "model_prediction": {
+      "model": "HistGradientBoosting",
+      "predicted_class": "Ransomware",
+      "confidence": 0.97,
+      "top2_candidates": [
+        [
+          "Ransomware",
+          0.97
+        ]
+      ],
+      "threshold_tau": 0.75
+    },
+    "advisory": {
+      "decision": "UNSUPPORTED_CATEGORY",
+      "playbook_id": "PB-UNSUPPORTED",
+      "title": "Category without a playbook",
+      "attck_techniques": [],
+      "recommendations": [
+        {
+          "action": "No category-specific playbook exists for this label; follow the general incident-response procedure.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        },
+        {
+          "action": "Escalate to an analyst and record the new category so a playbook can be written.",
+          "mitigation_id": null,
+          "mitigation_name": null
+        }
+      ],
+      "protocol_context": null,
+      "evidence": [
+        {
+          "feature": "Max",
+          "value": 54.0,
+          "benign_median": 1137.35,
+          "deviation_benign_sd": -0.54,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "rst_count",
+          "value": 0.0,
+          "benign_median": 635.15,
+          "deviation_benign_sd": -0.52,
+          "direction": "lower than benign"
+        },
+        {
+          "feature": "flow_duration",
+          "value": 0.0,
+          "benign_median": 26.5858,
+          "deviation_benign_sd": -0.51,
+          "direction": "lower than benign"
+        }
+      ],
+      "disclaimer": "Advisory only: these recommendations support a human analyst. They are generated from a model prediction that can be wrong, and this system does not block, filter, or prevent any traffic."
+    }
+  }
+}
