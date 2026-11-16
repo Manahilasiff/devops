@@ -1,0 +1,66 @@
+# Continuous Integration: runs on every push to main and on every pull request to main.
+# Two jobs run in parallel. The workflow passes only if both pass.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # allows a manual run from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend build (React + Vite)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      # package.json has no lint or test script, so the production build is the frontend check:
+      # it fails on any import or JSX error.
+      - name: Build frontend
+        run: npm run build
+
+  backend:
+    name: Backend validation (FastAPI + Phase 1 models)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Check the FastAPI app and the Phase 1 models load
+        working-directory: backend
+        run: |
+          python -c "import engine, main; assert engine.ART is not None, engine.LOAD_ERROR; print('API routes:', [r.path for r in main.app.routes if r.path.startswith('/api')])"
+
+      # 16 checks: engine rules, missing-column rejection, and RF accuracy / HGB macro-F1
+      # on the 40K held-out test set, which must equal the Phase 1 results.
+      - name: Run backend tests
+        run: python backend/test_engine.py

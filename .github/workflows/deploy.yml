@@ -1,0 +1,75 @@
+# Continuous Deployment: publishes the React frontend to GitHub Pages.
+# It starts only when the CI workflow has finished successfully for a push to main,
+# so broken code is never deployed. CI checks are not repeated here.
+name: Deploy to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch: # manual re-deploy from the Actions tab
+
+permissions:
+  contents: read
+  pages: write    # needed to publish to GitHub Pages
+  id-token: write # needed by actions/deploy-pages
+
+# Only one deployment at a time; a newer push waits instead of cancelling a running deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build production frontend
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout the commit that passed CI
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend (production)
+        run: npm run build
+        env:
+          # The site is served from https://<user>.github.io/<repository>/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          # GitHub Pages cannot run Python, so the live site talks to a backend running locally.
+          VITE_API_BASE_URL: http://localhost:8000
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload production build
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: frontend/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
